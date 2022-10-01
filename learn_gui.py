@@ -25,7 +25,7 @@ class WindowTopics(QWidget):
         uic.loadUi('window_topics.ui', self) 
         self.setWindowTitle('Темы')
         self.label.setText(f'Темы по предмету {self._subject}')
-        print('**************************')
+        
         print(self._subject_id, self._grade)
         topics = self._parent._subject_storage.get_topics(self._subject_id, self._grade)
         
