@@ -1,3 +1,4 @@
+from pydoc_data.topics import topics
 import sqlite3
 from tabulate import tabulate
 
@@ -282,6 +283,7 @@ class SubjectStorage:
             """)
         except sqlite3.OperationalError:
             self._log.warning('Таблицы не существует')
+            print('*********************************')
             return None
         else:
             subjects = self._cursor.fetchall()
@@ -290,7 +292,23 @@ class SubjectStorage:
             if subjects:
                 return subjects
             return None
-            
+    
+    def get_topics(self, subject_id, grade):
+        try:
+            self._cursor.execute(f"""
+                select id, topic from Topics
+                WHERE subject_id = {subject_id} and grade = {grade};
+            """)
+        except sqlite3.OperationalError:
+            self._log.warning('Таблицы не существет')
+            return None
+        else:
+            topics = self._cursor.fetchall()
+            self._log.info('Темы получены')
+            if topics:
+                return topics
+            return None
+
 
 
 
