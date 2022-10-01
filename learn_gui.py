@@ -30,8 +30,15 @@ class WindowTopics(QWidget):
         topics = self._parent._subject_storage.get_topics(self._subject_id, self._grade)
         
         for id_, topic in topics:
-            self.listWidget.addItem(topic) 
+            self.listWidget.addItem(topic)
+        self.listWidget.selectedItems()[0].text()
         self.show()
+    
+    def click_top(self):
+        self.ListWidget.itemClicked.connect(self.ok_button_t)
+
+    def ok_button_t(self):
+        self.win_cont = WindowContent(self, self._topic_id)
 
 class WindowSubjects(QMainWindow):
     def __init__(self, subject_storage):
@@ -57,11 +64,6 @@ class WindowSubjects(QMainWindow):
 
         self.show()
     
-    def click_top(self):
-        self.ListWidget.itemClicked.connect(self.ok_button_t)
-
-    def ok_button_t(self):
-        self.win_cont = WindowContent(self, _id)
 
     def onTabChanged(self):
         self.listWidgetLessons.clear()
