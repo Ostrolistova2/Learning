@@ -30,8 +30,11 @@ class WindowTopics(QWidget):
         print(self._subject_id, self._grade)
         topics = self._parent._subject_storage.get_topics(self._subject_id, self._grade)
         
-        for id_, topic in topics:
-            self.listWidget.addItem(topic)
+        if topics:
+            for id_, topic in topics:
+                self.listWidget.addItem(topic)
+        else:
+            print('Нет тем по выбранному предмету и классу')
         # self.listWidget.selectedItems()[0].text()
         # self._selected_topic[topic] = id_
         self.show()
