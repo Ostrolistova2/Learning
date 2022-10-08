@@ -18,6 +18,7 @@ class WindowTopics(QWidget):
         self._parent = parent
         self._subject_id = subject[0]
         self._subject = subject[1]
+        self._selected_topic = {}
         self._grade = grade
         self.initUI()
 
@@ -29,9 +30,20 @@ class WindowTopics(QWidget):
         print(self._subject_id, self._grade)
         topics = self._parent._subject_storage.get_topics(self._subject_id, self._grade)
         
-        for id_, topic in topics:
-            self.listWidget.addItem(topic) 
+        if topics:
+            for id_, topic in topics:
+                self.listWidget.addItem(topic)
+        else:
+            print('Нет тем по выбранному предмету и классу')
+        # self.listWidget.selectedItems()[0].text()
+        # self._selected_topic[topic] = id_
         self.show()
+    
+    def click_top(self):
+        self.ListWidget.itemClicked.connect(self.ok_button_t)
+
+    def ok_button_t(self):
+        self.win_cont = WindowContent(self, self._selected_topic)
 
 class WindowSubjects(QMainWindow):
     def __init__(self, subject_storage):
@@ -57,11 +69,6 @@ class WindowSubjects(QMainWindow):
 
         self.show()
     
-    def click_top(self):
-        self.ListWidget.itemClicked.connect(self.ok_button_t)
-
-    def ok_button_t(self):
-        self.win_cont = WindowContent(self, _id)
 
     def onTabChanged(self):
         self.listWidgetLessons.clear()
