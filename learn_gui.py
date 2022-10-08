@@ -18,6 +18,7 @@ class WindowTopics(QWidget):
         self._parent = parent
         self._subject_id = subject[0]
         self._subject = subject[1]
+        self._selected_topic = {}
         self._grade = grade
         self.initUI()
 
@@ -31,14 +32,15 @@ class WindowTopics(QWidget):
         
         for id_, topic in topics:
             self.listWidget.addItem(topic)
-        self.listWidget.selectedItems()[0].text()
+        # self.listWidget.selectedItems()[0].text()
+        # self._selected_topic[topic] = id_
         self.show()
     
     def click_top(self):
         self.ListWidget.itemClicked.connect(self.ok_button_t)
 
     def ok_button_t(self):
-        self.win_cont = WindowContent(self, self._topic_id)
+        self.win_cont = WindowContent(self, self._selected_topic)
 
 class WindowSubjects(QMainWindow):
     def __init__(self, subject_storage):
