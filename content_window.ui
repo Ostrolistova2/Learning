@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>668</width>
     <height>500</height>
    </rect>
   </property>
@@ -17,10 +17,40 @@
    <property name="geometry">
     <rect>
      <x>13</x>
-     <y>16</y>
-     <width>371</width>
-     <height>471</height>
+     <y>66</y>
+     <width>641</width>
+     <height>421</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_cont">
+   <property name="geometry">
+    <rect>
+     <x>25</x>
+     <y>19</y>
+     <width>611</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <property name="midLineWidth">
+    <number>0</number>
+   </property>
+   <property name="text">
+    <string>Тема:</string>
    </property>
   </widget>
  </widget>

@@ -6,10 +6,11 @@ import sqlite3
 from learnlogic.storage import SubjectStorage
 
 class WindowContent(QWidget):
-    def __init__(self, parent, topic_id):
+    def __init__(self, parent, topic_id, topic_name):
         super().__init__()
         self._parent = parent
         self._topic_id = topic_id
+        self._topic_name = topic_name
         self.initUI()
 
     def initUI(self):
@@ -19,7 +20,9 @@ class WindowContent(QWidget):
 
         if content:
             id_, content_text = content
+            self.textEdit.setText(content_text)
 
+            self.label_cont.setText(f'Темы : {self._topic_name}')
             # добавить в виджет
 
             print(content)
@@ -57,8 +60,9 @@ class WindowTopics(QWidget):
         self.show()
 
     def ok_button_t(self):
-        topic_id = self._selected_topic[self.listWidget.selectedItems()[0].text()]
-        self.win_cont = WindowContent(self._parent, topic_id)
+        topic_name = self.listWidget.selectedItems()[0].text()
+        topic_id = self._selected_topic[topic_name]
+        self.win_cont = WindowContent(self._parent, topic_id, topic_name)
 
 
 class WindowSubjects(QMainWindow):
