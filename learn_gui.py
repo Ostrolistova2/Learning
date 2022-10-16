@@ -6,18 +6,25 @@ import sqlite3
 from learnlogic.storage import SubjectStorage
 
 class WindowContent(QWidget):
-    def __init__(self, parent, topic_id, subject_storage):
+    def __init__(self, parent, topic_id):
         super().__init__()
         self._parent = parent
         self._topic_id = topic_id
-        # self._topic = topic
-        self._subject_storage = subject_storage
         self.initUI()
 
     def initUI(self):
         uic.loadUi('content_window.ui', self)
         self.setWindowTitle('Урок по теме:')
         content = self._parent._subject_storage.get_content(self._topic_id)
+
+        if content:
+            id_, content_text = content
+
+            # добавить в виджет
+
+            print(content)
+
+        self.show()
         
 
 class WindowTopics(QWidget):
@@ -51,7 +58,8 @@ class WindowTopics(QWidget):
 
     def ok_button_t(self):
         topic_id = self._selected_topic[self.listWidget.selectedItems()[0].text()]
-        self.win_cont = WindowContent(self, topic_id, subject_storage)
+        self.win_cont = WindowContent(self._parent, topic_id)
+
 
 class WindowSubjects(QMainWindow):
     def __init__(self, subject_storage):

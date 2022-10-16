@@ -318,7 +318,7 @@ class SubjectStorage:
             self._log.warning('Таблицы с контентом не существует')
             return None
         else:
-            content = self._cursor.fetchall()
+            content = self._cursor.fetchone()
             self._log.info('Темы получены')
             if content:
                 return content
