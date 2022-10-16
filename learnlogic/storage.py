@@ -283,7 +283,6 @@ class SubjectStorage:
             """)
         except sqlite3.OperationalError:
             self._log.warning('Таблицы не существует')
-            print('*********************************')
             return None
         else:
             subjects = self._cursor.fetchall()
@@ -307,6 +306,22 @@ class SubjectStorage:
             self._log.info('Темы получены')
             if topics:
                 return topics
+            return None
+
+    def get_content(self, topic_id):
+        try:
+            self._cursor.execute(f"""
+                select id, content from Contents
+                WHERE topic_id = {topic_id}
+            """)
+        except sqlite3.OperationalError:
+            self._log.warning('Таблицы с контентом не существует')
+            return None
+        else:
+            content = self._cursor.fetchall()
+            self._log.info('Темы получены')
+            if content:
+                return content
             return None
 
 
