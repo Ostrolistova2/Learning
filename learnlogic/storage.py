@@ -210,9 +210,11 @@ class SubjectStorage:
     def add_content(self, topic, paragraph, ex, sr, kr):
         try:
             top_id = self._get_top_id(topic)
+            print('0000000000000000000000000000', top_id)
             self._cursor.execute(f"""
-                insert into Contents(content_paragraph, content_ex, content_sr,content_kr, topic_id) values ('{paragraph}', '{ex}', '{sr}', '{kr}' {top_id});
+                insert into Contents(content_paragraph, content_ex, content_sr, content_kr, topic_id) values ('{paragraph}', '{ex}', '{sr}', '{kr}', {top_id});
             """)
+            print('**************')
         except sqlite3.IntegrityError or sqlite3.OperationalError:
             self._log.warning('Таблицы не существует')
             return False
@@ -314,7 +316,7 @@ class SubjectStorage:
     def get_content(self, topic_id):
         try:
             self._cursor.execute(f"""
-                select id, content_paregraph, content_ex, content_sr, content_kr from Contents
+                select id, content_paragraph, content_ex, content_sr, content_kr from Contents
                 WHERE topic_id = {topic_id}
             """)
         except sqlite3.OperationalError:

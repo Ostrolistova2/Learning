@@ -82,7 +82,7 @@ if __name__ == '__main__':
     # subject_storage.add_lesson('ooo', '_________________ТЕКСТ О ПРОПОРЦИЯХ_______________', 'Урок1')
     # subject_storage.show_lessons()
 
-    # print(subject_storage.get_subjects())
+    print(subject_storage.get_subjects())
     print(subject_storage.get_topics(1, 1))
     print(subject_storage.get_content(1))
 
