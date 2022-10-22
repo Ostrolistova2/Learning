@@ -75,7 +75,7 @@
     <enum>QTabWidget::Triangular</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -152,6 +152,16 @@
     <attribute name="title">
      <string>К/Р</string>
     </attribute>
+    <widget class="QTextEdit" name="textEdit_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>621</width>
+       <height>371</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

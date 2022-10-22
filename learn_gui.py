@@ -19,8 +19,11 @@ class WindowContent(QWidget):
         content = self._parent._subject_storage.get_content(self._topic_id)
 
         if content:
-            id_, content_text = content
+            id_, content_text, content_ex, content_sr, content_kr = content
             self.textEdit.setText(content_text)
+            self.textEdit_2.setText(content_ex)
+            self.textEdit_3.setText(content_sr)
+            self.textEdit_4.setText(content_kr)
 
             self.label_cont.setText(f'Темы : {self._topic_name}')
             # добавить в виджет
