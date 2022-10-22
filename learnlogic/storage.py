@@ -39,7 +39,10 @@ class SubjectStorage:
         self._cursor.execute("""
             create table if not exists Contents(
                 id INTEGER PRIMARY KEY, 
-                content TEXT,
+                content_paragraph TEXT,
+                content_ex TEXT,
+                content_sr TEXT,
+                content_kr TEXT, 
                 topic_id INTEGER NOT NULL,
                 FOREIGN KEY (topic_id) REFERENCES Topics(id)
                 )
@@ -204,11 +207,11 @@ class SubjectStorage:
                 self._log.warning('ай ди темы не получен')
                 return None
     
-    def add_content(self, topic, content):
+    def add_content(self, topic, paragraph, ex, sr, kr):
         try:
             top_id = self._get_top_id(topic)
             self._cursor.execute(f"""
-                insert into Contents(content, topic_id) values ('{content}', {top_id});
+                insert into Contents(content_paragraph, content_ex, content_sr,content_kr, topic_id) values ('{paragraph}', '{ex}', '{sr}', '{kr}' {top_id});
             """)
         except sqlite3.IntegrityError or sqlite3.OperationalError:
             self._log.warning('Таблицы не существует')
@@ -227,13 +230,13 @@ class SubjectStorage:
             self._log.warning('Таблицы не существует')
         else:
             content = self._cursor.fetchall()
-            print(tabulate(content, headers=['id', 'Content', 'Topic_id']))
+            print(tabulate(content, headers=['id', 'paragraph', 'ex', 'sr', 'kr', 'Topic_id']))
             self._log.info('Контент выведен.')
     
-    def _get_cont_id(self, content):
+    def _get_cont_id(self, paragraph):
         try:
             self._cursor.execute(f"""
-                    select id from Contents WHERE content = '{content}';
+                    select id from Contents WHERE content_paragraph = '{paragraph}';
                 """)
         except sqlite3.OperationalError:
             self._log.warning('Таблицы не существует')
@@ -247,10 +250,10 @@ class SubjectStorage:
                 self._log.warning('ай ди контента не получчен(')
                 return None
 
-    def add_lesson(self, username, content, headline):
+    def add_lesson(self, username, content_paragraph, headline):
         try:
             st_id = self._get_st_id(username)
-            content_id = self._get_cont_id(content)
+            content_id = self._get_cont_id(content_paragraph)
             print('***', st_id, content_id)
             self._cursor.execute(f"""
                 insert into Lessons(headline, student_id, content_id) values ('{headline}', {st_id}, {content_id});
@@ -311,7 +314,7 @@ class SubjectStorage:
     def get_content(self, topic_id):
         try:
             self._cursor.execute(f"""
-                select id, content from Contents
+                select id, content_paregraph, content_ex, content_sr, content_kr from Contents
                 WHERE topic_id = {topic_id}
             """)
         except sqlite3.OperationalError:
@@ -319,7 +322,7 @@ class SubjectStorage:
             return None
         else:
             content = self._cursor.fetchone()
-            self._log.info('Темы получены')
+            self._log.info('пар. получены')
             if content:
                 return content
             return None
