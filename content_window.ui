@@ -75,20 +75,23 @@
     <enum>QTabWidget::Triangular</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
      <string>Параграф</string>
     </attribute>
-    <widget class="QTextBrowser" name="textBrowser">
+    <widget class="QTextEdit" name="textEdit_text">
      <property name="geometry">
       <rect>
-       <x>5</x>
-       <y>11</y>
+       <x>3</x>
+       <y>16</y>
        <width>631</width>
-       <height>441</height>
+       <height>431</height>
       </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
@@ -96,7 +99,7 @@
     <attribute name="title">
      <string>Ex</string>
     </attribute>
-    <widget class="QTextEdit" name="textEdit_2">
+    <widget class="QTextEdit" name="textEdit_ex">
      <property name="geometry">
       <rect>
        <x>13</x>
@@ -104,6 +107,9 @@
        <width>621</width>
        <height>391</height>
       </rect>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton">
@@ -137,7 +143,7 @@
     <attribute name="title">
      <string>С/Р</string>
     </attribute>
-    <widget class="QTextEdit" name="textEdit_3">
+    <widget class="QTextEdit" name="textEdit_sr">
      <property name="geometry">
       <rect>
        <x>13</x>
@@ -178,7 +184,7 @@
     <attribute name="title">
      <string>К/Р</string>
     </attribute>
-    <widget class="QTextEdit" name="textEdit_4">
+    <widget class="QTextEdit" name="textEdit_kr">
      <property name="geometry">
       <rect>
        <x>10</x>

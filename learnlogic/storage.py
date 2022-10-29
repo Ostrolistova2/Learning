@@ -42,7 +42,9 @@ class SubjectStorage:
                 content_paragraph TEXT,
                 content_ex TEXT,
                 content_sr TEXT,
-                content_kr TEXT, 
+                content_kr TEXT,
+                content_ex_right TEXT,
+                content_sr_right TEXT, 
                 topic_id INTEGER NOT NULL,
                 FOREIGN KEY (topic_id) REFERENCES Topics(id)
                 )
