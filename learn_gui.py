@@ -20,13 +20,18 @@ class WindowContent(QWidget):
 
         if content:
             id_, content_text, content_ex, content_sr, content_kr = content
-            self.textEdit.setText(content_text)
+            self.textBrowser.setText(content_text)
             self.textEdit_2.setText(content_ex)
             self.textEdit_3.setText(content_sr)
             self.textEdit_4.setText(content_kr)
 
             self.label_cont.setText(f'Темы : {self._topic_name}')
             # добавить в виджет
+
+            self.cl_button.clicked.connect(window.close)
+            self.show()
+
+
 
             print(content)
 
@@ -135,6 +140,7 @@ if __name__ == '__main__':
     s_storage_log = logging.getLogger('users_storage_log')
     subject_storage = SubjectStorage(conn, s_storage_log)
     window = WindowSubjects(subject_storage)
+    #cont_window = WindowContent(window)
 
     sys.exit(app.exec_())
 
