@@ -19,7 +19,7 @@ class WindowContent(QWidget):
         content = self._parent._subject_storage.get_content(self._topic_id)
 
         if content:
-            id_, content_text, content_ex, content_sr, content_kr = content
+            id_, content_text, content_ex, content_sr, content_kr, self.content_ex_right = content
             self.textEdit_text.setText(content_text)
             self.textEdit_ex.setText(content_ex)
             self.textEdit_sr.setText(content_sr)
@@ -28,12 +28,24 @@ class WindowContent(QWidget):
             self.label_cont.setText(f'Темы : {self._topic_name}')
             # добавить в виджет
 
-            self.cl_button.clicked.connect(window.close)
+            self.cl_button.clicked.connect(self.close)
             self.show()
 
             print(content)
 
+        self.pushButton_2.clicked.connect(self.check)
         self.show()
+
+    def check(self):
+        ex_text = self.textEdit_ex.toPlainText()
+        if ex_text == self.content_ex_right:
+            # Вывести сообщение, что все верно
+            pass
+        else:
+            # Вывести сообщение об ошибке
+            pass
+        
+
         
 
 class WindowTopics(QWidget):

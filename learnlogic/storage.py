@@ -44,7 +44,6 @@ class SubjectStorage:
                 content_sr TEXT,
                 content_kr TEXT,
                 content_ex_right TEXT,
-                content_sr_right TEXT, 
                 topic_id INTEGER NOT NULL,
                 FOREIGN KEY (topic_id) REFERENCES Topics(id)
                 )
@@ -209,12 +208,12 @@ class SubjectStorage:
                 self._log.warning('ай ди темы не получен')
                 return None
     
-    def add_content(self, topic, paragraph, ex, sr, kr):
+    def add_content(self, topic, paragraph, ex, sr, kr, ex_right):
         try:
             top_id = self._get_top_id(topic)
             print('0000000000000000000000000000', top_id)
             self._cursor.execute(f"""
-                insert into Contents(content_paragraph, content_ex, content_sr, content_kr, topic_id) values ('{paragraph}', '{ex}', '{sr}', '{kr}', {top_id});
+                insert into Contents(content_paragraph, content_ex, content_sr, content_kr, content_ex_right, topic_id) values ('{paragraph}', '{ex}', '{sr}', '{kr}', '{ex_right}', {top_id});
             """)
             print('**************')
         except sqlite3.IntegrityError or sqlite3.OperationalError:
@@ -318,7 +317,7 @@ class SubjectStorage:
     def get_content(self, topic_id):
         try:
             self._cursor.execute(f"""
-                select id, content_paragraph, content_ex, content_sr, content_kr from Contents
+                select id, content_paragraph, content_ex, content_sr, content_kr, content_ex_right from Contents
                 WHERE topic_id = {topic_id}
             """)
         except sqlite3.OperationalError:
