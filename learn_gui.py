@@ -19,7 +19,7 @@ class WindowContent(QWidget):
         content = self._parent._subject_storage.get_content(self._topic_id)
 
         if content:
-            id_, content_text, content_ex, content_sr, content_kr, self.content_ex_right = content
+            id_, content_text, content_ex, content_sr, content_kr, self.content_ex_right, self.content_sr_right, self.content_kr_right = content
             self.textEdit_text.setText(content_text)
             self.textEdit_ex.setText(content_ex)
             self.textEdit_sr.setText(content_sr)
@@ -33,17 +33,35 @@ class WindowContent(QWidget):
 
             print(content)
 
-        self.pushButton_2.clicked.connect(self.check)
+        self.pushButton_2.clicked.connect(self.check_ex)
+        self.show()
+        self.pushButton_3.clicked.connect(self.check_sr)
+        self.show()
+        self.pushButton_5.clicked.connect(self.check_kr)
         self.show()
 
-    def check(self):
+    def check_sr(self):
+        sr_text = self.textEdit_sr.toPlainText()
+        if sr_text == self.content_sr_right:
+            self.textEdit_sr.setText('ВСЕ ПРАВИЛЬНО!')
+        else:
+            self.textEdit_sr.setText('Ошибка!')
+
+    def check_kr(self):
+        kr_text = self.textEdit_kr.toPlainText()
+        if kr_text == self.content_kr_right:
+            self.textEdit_kr.setText('ВСЕ ПРАВИЛЬНО!')
+        else:
+            self.textEdit_kr.setText('Ошибка!')
+
+    def check_ex(self):
         ex_text = self.textEdit_ex.toPlainText()
         if ex_text == self.content_ex_right:
-            # Вывести сообщение, что все верно
-            pass
+            self.textEdit_ex.setText('ВСЕ ПРАВИЛЬНО!')
         else:
-            # Вывести сообщение об ошибке
-            pass
+            self.textEdit_ex.setText('Ошибка!')
+            
+            
         
 
         
