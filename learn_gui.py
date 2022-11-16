@@ -5,6 +5,7 @@ import logging
 import sqlite3
 from learnlogic.storage import SubjectStorage
 
+
 class WindowContent(QWidget):
     def __init__(self, parent, topic_id, topic_name):
         super().__init__()
@@ -34,10 +35,10 @@ class WindowContent(QWidget):
             print(content)
 
         self.pushButton_2.clicked.connect(self.check_ex)
-        self.show()
         self.pushButton_3.clicked.connect(self.check_sr)
-        self.show()
         self.pushButton_5.clicked.connect(self.check_kr)
+
+        self.pushButton.clicked.connect(self.reset_ex)
         self.show()
 
     def check_sr(self):
@@ -56,15 +57,16 @@ class WindowContent(QWidget):
 
     def check_ex(self):
         ex_text = self.textEdit_ex.toPlainText()
+        # ex_text = ex_text.rstrip().lstrip()
         if ex_text == self.content_ex_right:
             self.textEdit_ex.setText('ВСЕ ПРАВИЛЬНО!')
         else:
             self.textEdit_ex.setText('Ошибка!')
-            
-            
-        
+            self.ex_text = ex_text
 
-        
+    def reset_ex(self):
+        self.textEdit_ex.setText(self.ex_text)
+
 
 class WindowTopics(QWidget):
     def __init__(self, parent, subject, grade):
@@ -77,21 +79,21 @@ class WindowTopics(QWidget):
         self.initUI()
 
     def initUI(self):
-        uic.loadUi('window_topics.ui', self) 
+        uic.loadUi('window_topics.ui', self)
         self.setWindowTitle('Темы')
         self.label.setText(f'Темы по предмету {self._subject}')
-        
+
         print(self._subject_id, self._grade)
         topics = self._parent._subject_storage.get_topics(self._subject_id, self._grade)
-        
+
         if topics:
             for id_, topic in topics:
                 self._selected_topic[topic] = id_
                 self.listWidget.addItem(topic)
         else:
             print('Нет тем по выбранному предмету и классу')
-        #self.listWidget.selectedItems()[0].text()
-        #self._selected_topic[topic] = id_
+        # self.listWidget.selectedItems()[0].text()
+        # self._selected_topic[topic] = id_
         self.pushButton.clicked.connect(self.ok_button_t)
         self.show()
 
@@ -121,10 +123,8 @@ class WindowSubjects(QMainWindow):
 
         self.tabWidget.currentChanged.connect(self.onTabChanged)
         self.okButton.clicked.connect(self.onOkClicked)
-    
 
         self.show()
-    
 
     def onTabChanged(self):
         self.listWidgetLessons.clear()
@@ -141,13 +141,13 @@ class WindowSubjects(QMainWindow):
         i_class = self.comboBox.currentText()
 
         self.win_topic = WindowTopics(self, (self._selected_subjects[subject], subject), i_class)
-    
+
     def onItemChanged(self):
-        subject = self.listWidgetLessons.selectedItems()[0].text()
+        # subject = self.listWidgetLessons.selectedItems()[0].text()
         self.comboBox.clear()
         for i_class in range(1, 12):
             self.comboBox.addItem(str(i_class))
-        
+
 
 class Grade(QWidget):
     def __init__(self):
@@ -155,12 +155,12 @@ class Grade(QWidget):
         self.initUI()
 
     def initUI(self):
-        new_window = uic.loadUi('window_2.ui') 
-        item = self.listWidgetLessons.currentItem()
+        new_window = uic.loadUi('window_2.ui')
+        # item = self.listWidgetLessons.currentItem()
         new_window.setWindowTitle("item.text")
         new_window.show()
 
-    
+
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)
@@ -168,7 +168,6 @@ if __name__ == '__main__':
     s_storage_log = logging.getLogger('users_storage_log')
     subject_storage = SubjectStorage(conn, s_storage_log)
     window = WindowSubjects(subject_storage)
-    #cont_window = WindowContent(window)
+    # cont_window = WindowContent(window)
 
     sys.exit(app.exec_())
-

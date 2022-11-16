@@ -1,4 +1,3 @@
-from pydoc_data.topics import topics
 import sqlite3
 from tabulate import tabulate
 
@@ -213,11 +212,9 @@ class SubjectStorage:
     def add_content(self, topic, paragraph, ex, sr, kr, ex_right, sr_right, kr_right):
         try:
             top_id = self._get_top_id(topic)
-            print('0000000000000000000000000000', top_id)
             self._cursor.execute(f"""
                 insert into Contents(content_paragraph, content_ex, content_sr, content_kr, content_ex_right, content_sr_right, content_kr_right, topic_id) values ('{paragraph}', '{ex}', '{sr}', '{kr}', '{ex_right}', '{sr_right}', '{kr_right}', {top_id});
             """)
-            print('**************')
         except sqlite3.IntegrityError or sqlite3.OperationalError:
             self._log.warning('Таблицы не существует')
             return False
@@ -235,7 +232,7 @@ class SubjectStorage:
             self._log.warning('Таблицы не существует')
         else:
             content = self._cursor.fetchall()
-            print(tabulate(content, headers=['id', 'paragraph', 'ex', 'sr', 'kr', 'Topic_id']))
+            # print(tabulate(content, headers=['id', 'paragraph', 'ex', 'sr', 'kr', 'Topic_id']))
             self._log.info('Контент выведен.')
     
     def _get_cont_id(self, paragraph):
@@ -259,7 +256,7 @@ class SubjectStorage:
         try:
             st_id = self._get_st_id(username)
             content_id = self._get_cont_id(content_paragraph)
-            print('***', st_id, content_id)
+            # print('***', st_id, content_id)
             self._cursor.execute(f"""
                 insert into Lessons(headline, student_id, content_id) values ('{headline}', {st_id}, {content_id});
             """)
@@ -280,7 +277,7 @@ class SubjectStorage:
             self._log.warning('Таблицы не существует')
         else:
             lesson = self._cursor.fetchall()
-            print(tabulate(lesson, headers=['id', 'Headline', 'student_id', 'content_id']))
+            # print(tabulate(lesson, headers=['id', 'Headline', 'student_id', 'content_id']))
             
             self._log.info('Уроки выведены.') 
 
