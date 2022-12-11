@@ -1,35 +1,34 @@
-from pydoc_data.topics import topics
 import sqlite3
 from tabulate import tabulate
+
 
 class SubjectStorage:
     def __init__(self, conn, log):
         self._conn = conn
         self._cursor = self._conn.cursor()
         self._log = log
-        
 
     def create(self):
         self._cursor.execute("""
             create table if not exists Students(
-                id INTEGER PRIMARY KEY, 
+                id INTEGER PRIMARY KEY,
                 username TEXT UNIQUE,
                 firstname TEXT,
                 lastname TEXT
         )
         """)
-        
+
         self._cursor.execute("""
                 create table if not exists Subjects(
                     id INTEGER PRIMARY KEY,
                     subject TEXT UNIQUE
                 )
             """)
-        
+
         self._cursor.execute("""
             create table if not exists Topics(
                 id INTEGER PRIMARY KEY,
-                topic TEXT, 
+                topic TEXT,
                 grade INTEGER NOT NULL,
                 subject_id INTEGER NOT NULL,
                 FOREIGN KEY (subject_id) REFERENCES Subjects(id)
@@ -38,8 +37,14 @@ class SubjectStorage:
 
         self._cursor.execute("""
             create table if not exists Contents(
-                id INTEGER PRIMARY KEY, 
-                content TEXT,
+                id INTEGER PRIMARY KEY,
+                content_paragraph TEXT,
+                content_ex TEXT,
+                content_sr TEXT,
+                content_kr TEXT,
+                content_ex_right TEXT,
+                content_sr_right TEXT,
+                content_kr_right TEXT,
                 topic_id INTEGER NOT NULL,
                 FOREIGN KEY (topic_id) REFERENCES Topics(id)
                 )
@@ -109,7 +114,6 @@ class SubjectStorage:
             self._log.info('Студенты выведены.')
             return True
 
-
     def _get_sb_id(self, subject):
         try:
             self._cursor.execute(f"""
@@ -127,7 +131,6 @@ class SubjectStorage:
                 self._log.warning('ай ди предмета не получен')
                 return None
 
-
     def _get_sb(self):
         try:
             self._cursor.execute(f"""
@@ -139,7 +142,8 @@ class SubjectStorage:
             return None
         else:
             if subjects:
-                self._log.info(f'Получаем имена предметов')
+                sms = 'Получаем имена предметов'
+                self._log.info(f'{sms}')
                 subjects_s = [sb[0] for sb in subjects]
                 return subjects_s
             return None
@@ -203,12 +207,12 @@ class SubjectStorage:
             else:
                 self._log.warning('ай ди темы не получен')
                 return None
-    
-    def add_content(self, topic, content):
+
+    def add_content(self, topic, paragraph, ex, sr, kr, ex_right, sr_right, kr_right):
         try:
             top_id = self._get_top_id(topic)
             self._cursor.execute(f"""
-                insert into Contents(content, topic_id) values ('{content}', {top_id});
+                insert into Contents(content_paragraph, content_ex, content_sr, content_kr, content_ex_right, content_sr_right, content_kr_right, topic_id) values ('{paragraph}', '{ex}', '{sr}', '{kr}', '{ex_right}', '{sr_right}', '{kr_right}', {top_id});
             """)
         except sqlite3.IntegrityError or sqlite3.OperationalError:
             self._log.warning('Таблицы не существует')
@@ -227,13 +231,13 @@ class SubjectStorage:
             self._log.warning('Таблицы не существует')
         else:
             content = self._cursor.fetchall()
-            print(tabulate(content, headers=['id', 'Content', 'Topic_id']))
+            # print(tabulate(content, headers=['id', 'paragraph', 'ex', 'sr', 'kr', 'Topic_id']))
             self._log.info('Контент выведен.')
-    
-    def _get_cont_id(self, content):
+
+    def _get_cont_id(self, paragraph):
         try:
             self._cursor.execute(f"""
-                    select id from Contents WHERE content = '{content}';
+                    select id from Contents WHERE content_paragraph = '{paragraph}';
                 """)
         except sqlite3.OperationalError:
             self._log.warning('Таблицы не существует')
@@ -247,11 +251,11 @@ class SubjectStorage:
                 self._log.warning('ай ди контента не получчен(')
                 return None
 
-    def add_lesson(self, username, content, headline):
+    def add_lesson(self, username, content_paragraph, headline):
         try:
             st_id = self._get_st_id(username)
-            content_id = self._get_cont_id(content)
-            print('***', st_id, content_id)
+            content_id = self._get_cont_id(content_paragraph)
+            # print('***', st_id, content_id)
             self._cursor.execute(f"""
                 insert into Lessons(headline, student_id, content_id) values ('{headline}', {st_id}, {content_id});
             """)
@@ -272,9 +276,8 @@ class SubjectStorage:
             self._log.warning('Таблицы не существует')
         else:
             lesson = self._cursor.fetchall()
-            print(tabulate(lesson, headers=['id', 'Headline', 'student_id', 'content_id']))
-            
-            self._log.info('Уроки выведены.') 
+            # print(tabulate(lesson, headers=['id', 'Headline', 'student_id', 'content_id']))
+            self._log.info('Уроки выведены.')
 
     def get_subjects(self):
         try:
@@ -283,16 +286,16 @@ class SubjectStorage:
             """)
         except sqlite3.OperationalError:
             self._log.warning('Таблицы не существует')
-            print('*********************************')
             return None
+
         else:
             subjects = self._cursor.fetchall()
-            
+
             self._log.info('Предметы получены')
             if subjects:
                 return subjects
             return None
-    
+
     def get_topics(self, subject_id, grade):
         try:
             self._cursor.execute(f"""
@@ -309,15 +312,26 @@ class SubjectStorage:
                 return topics
             return None
 
-
-
-
+    def get_content(self, topic_id):
+        try:
+            self._cursor.execute(f"""
+                select id, content_paragraph, content_ex, content_sr, content_kr, content_ex_right, content_sr_right, content_kr_right from Contents
+                WHERE topic_id = {topic_id}
+            """)
+        except sqlite3.OperationalError:
+            self._log.warning('Таблицы с контентом не существует')
+            return None
+        else:
+            content = self._cursor.fetchone()
+            self._log.info('пар. получены')
+            if content:
+                return content
+            return None
 
 
 if __name__ == '__main__':
     # conn = sqlite3.connect('logic/db.sqlite3')
     pass
-
     # subjects_storage = SubjectStorage(conn, log)
     # subjects_storage.create()
     # subjects_storage.add_subject('Русский язык')

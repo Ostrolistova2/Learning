@@ -1,3 +1,4 @@
 tabulate==0.8.9
 PyQt5==5.15.4
 pyqt5-tools==5.15.4.3.2
+flake8==3.9.1
