@@ -133,7 +133,7 @@ class SubjectStorage:
 
     def _get_sb(self):
         try:
-            self._cursor.execute(f"""
+            self._cursor.execute("""
                 select subject from Subjects
             """)
             subjects = self._cursor.fetchall()
@@ -231,7 +231,7 @@ class SubjectStorage:
             self._log.warning('Таблицы не существует')
         else:
             content = self._cursor.fetchall()
-            # print(tabulate(content, headers=['id', 'paragraph', 'ex', 'sr', 'kr', 'Topic_id']))
+            print(tabulate(content, headers=['id', 'paragraph', 'ex', 'sr', 'kr', 'Topic_id']))
             self._log.info('Контент выведен.')
 
     def _get_cont_id(self, paragraph):
@@ -269,14 +269,14 @@ class SubjectStorage:
 
     def show_lessons(self):
         try:
-           self._cursor.execute("""
+            self._cursor.execute("""
                 select * from Lessons;
             """)
         except sqlite3.OperationalError:
             self._log.warning('Таблицы не существует')
         else:
             lesson = self._cursor.fetchall()
-            # print(tabulate(lesson, headers=['id', 'Headline', 'student_id', 'content_id']))
+            print(tabulate(lesson, headers=['id', 'Headline', 'student_id', 'content_id']))
             self._log.info('Уроки выведены.')
 
     def get_subjects(self):
